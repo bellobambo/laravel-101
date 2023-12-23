@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -17,8 +18,45 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     // return view('welcome');
-    $users = DB::select("select * from users where email=?" , ['bellobambo21@gmail.com']);
+    $users = User::where('id', 1)->first();
+
+
+    // $user = User::create([
+
+    //     'name' => 'Bello',
+    //     'email' => 'sule@mailinator.com',
+    //     'password' => 'password'
+    // ]);
+
+    // $user = User::find(6);
+    // $user->update([
+    //     'email' => 'qtip@mailinator.com',
+    // ]);
+
+
+    // $user = User::find(6);
+    // $user->delete();
+
     dd($users);
+    // $users = DB::insert("insert into users (name, email, password) values (?,?,?)", [
+    //     'Bello', 'bello@mailinator.com', 'password'
+    // ]);
+
+    // $user = DB::update("update users set email=?  where id=?" , [
+    //     'russ@mailinator.com',
+    //     3
+    // ]);
+
+    // $user = DB::table('users')->insert([
+
+    //     'name' => 'Bello',
+    //     'email' => 'yomi@mailinator.com',
+    //     'password' => 'password'
+    // ]);
+
+    // $user =DB::table('users')->where('id' , 4)->update(['email' => 'abcd@gmail.com']);
+
+    // $user = DB::table('users')->where('id' , 4)->delete();
 });
 
 Route::get('/dashboard', function () {
@@ -31,4 +69,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
