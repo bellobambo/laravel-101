@@ -18,14 +18,45 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     // return view('welcome');
-    $users = User::where('id', 1)->first();
+    $users = User::find(14);
+    dd($users->name);
 
+
+    // $user = DB::insert('insert into users (name, email, password) values (?, ?, ?)', [
+    //     'bambo',
+    //     'slawn@mailinator.com',
+    //     'password'
+    // ]);
+
+
+    // $user = DB::table('users')->insert([
+
+    //     'name' => 'ayodeji',
+    //     'email' => 'olaolu@mailinator.com',
+    //     'password' => 'password'
+    // ]);
 
     // $user = User::create([
 
-    //     'name' => 'Bello',
-    //     'email' => 'sule@mailinator.com',
+    //     'name' => 'jamiu',
+    //     'email' => 'jamiu@mailinator.com',
     //     'password' => 'password'
+    // ]);
+
+    // $user = User::create([
+
+    //     'name' => 'jamiu',
+    //     'email' => 'jamiu32@mailinator.com',
+    //     'password' => bcrypt( 'password')
+
+    // ]);
+
+    // $user = User::create([
+
+    //     'name' => 'jamiu',
+    //     'email' => 'jam3332@mailinator.com',
+    //     'password' => 'password'
+
     // ]);
 
     // $user = User::find(6);
@@ -37,7 +68,6 @@ Route::get('/', function () {
     // $user = User::find(6);
     // $user->delete();
 
-    dd($users);
     // $users = DB::insert("insert into users (name, email, password) values (?,?,?)", [
     //     'Bello', 'bello@mailinator.com', 'password'
     // ]);
