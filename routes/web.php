@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+// Route::get('/', function () {
     // return view('welcome');
-    $users = User::find(14);
-    dd($users->name);
+    // $users = User::find(14);
+    // dd($users->name);
 
 
     // $user = DB::insert('insert into users (name, email, password) values (?, ?, ?)', [
@@ -87,7 +87,12 @@ Route::get('/', function () {
     // $user =DB::table('users')->where('id' , 4)->update(['email' => 'abcd@gmail.com']);
 
     // $user = DB::table('users')->where('id' , 4)->delete();
+// });
+
+Route::get('/', function () {
+    return view('welcome');
 });
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -96,6 +101,9 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::patch('/profile/avatar', [AvatarController::class, 'update'])->name('profile.avatar');
+
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
