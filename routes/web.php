@@ -5,6 +5,11 @@ use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
+use OpenAI\Laravel\Facades\OpenAI;
+use Illuminate\Support\Facades\Auth;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,76 +23,76 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Route::get('/', function () {
-    // return view('welcome');
-    // $users = User::find(14);
-    // dd($users->name);
+// return view('welcome');
+// $users = User::find(14);
+// dd($users->name);
 
 
-    // $user = DB::insert('insert into users (name, email, password) values (?, ?, ?)', [
-    //     'bambo',
-    //     'slawn@mailinator.com',
-    //     'password'
-    // ]);
+// $user = DB::insert('insert into users (name, email, password) values (?, ?, ?)', [
+//     'bambo',
+//     'slawn@mailinator.com',
+//     'password'
+// ]);
 
 
-    // $user = DB::table('users')->insert([
+// $user = DB::table('users')->insert([
 
-    //     'name' => 'ayodeji',
-    //     'email' => 'olaolu@mailinator.com',
-    //     'password' => 'password'
-    // ]);
+//     'name' => 'ayodeji',
+//     'email' => 'olaolu@mailinator.com',
+//     'password' => 'password'
+// ]);
 
-    // $user = User::create([
+// $user = User::create([
 
-    //     'name' => 'jamiu',
-    //     'email' => 'jamiu@mailinator.com',
-    //     'password' => 'password'
-    // ]);
+//     'name' => 'jamiu',
+//     'email' => 'jamiu@mailinator.com',
+//     'password' => 'password'
+// ]);
 
-    // $user = User::create([
+// $user = User::create([
 
-    //     'name' => 'jamiu',
-    //     'email' => 'jamiu32@mailinator.com',
-    //     'password' => bcrypt( 'password')
+//     'name' => 'jamiu',
+//     'email' => 'jamiu32@mailinator.com',
+//     'password' => bcrypt( 'password')
 
-    // ]);
+// ]);
 
-    // $user = User::create([
+// $user = User::create([
 
-    //     'name' => 'jamiu',
-    //     'email' => 'jam3332@mailinator.com',
-    //     'password' => 'password'
+//     'name' => 'jamiu',
+//     'email' => 'jam3332@mailinator.com',
+//     'password' => 'password'
 
-    // ]);
+// ]);
 
-    // $user = User::find(6);
-    // $user->update([
-    //     'email' => 'qtip@mailinator.com',
-    // ]);
+// $user = User::find(6);
+// $user->update([
+//     'email' => 'qtip@mailinator.com',
+// ]);
 
 
-    // $user = User::find(6);
-    // $user->delete();
+// $user = User::find(6);
+// $user->delete();
 
-    // $users = DB::insert("insert into users (name, email, password) values (?,?,?)", [
-    //     'Bello', 'bello@mailinator.com', 'password'
-    // ]);
+// $users = DB::insert("insert into users (name, email, password) values (?,?,?)", [
+//     'Bello', 'bello@mailinator.com', 'password'
+// ]);
 
-    // $user = DB::update("update users set email=?  where id=?" , [
-    //     'russ@mailinator.com',
-    //     3
-    // ]);
+// $user = DB::update("update users set email=?  where id=?" , [
+//     'russ@mailinator.com',
+//     3
+// ]);
 
-    // $user = DB::table('users')->insert([
+// $user = DB::table('users')->insert([
 
-    //     'name' => 'Bello',
-    //     'email' => 'yomi@mailinator.com',
-    //     'password' => 'password'
-    // ]);
+//     'name' => 'Bello',
+//     'email' => 'yomi@mailinator.com',
+//     'password' => 'password'
+// ]);
 
-    // $user =DB::table('users')->where('id' , 4)->update(['email' => 'abcd@gmail.com']);
+// $user =DB::table('users')->where('id' , 4)->update(['email' => 'abcd@gmail.com']);
 
-    // $user = DB::table('users')->where('id' , 4)->delete();
+// $user = DB::table('users')->where('id' , 4)->delete();
 // });
 
 Route::get('/', function () {
@@ -109,3 +114,21 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+Route::get('/auth/redirect', function () {
+    return Socialite::driver('github')->redirect();
+})->name('login.github');
+
+
+Route::get('/auth/callback', function () {
+    $user = Socialite::driver('github')->user();
+    $user = User::updateOrCreate(["email" => $user->email],
+        [
+            'name' => $user->name,
+            'password' => 'password',
+        ]);
+
+    Auth::login($user);
+    return redirect('/dashboard');
+    // dd($user->email);
+});

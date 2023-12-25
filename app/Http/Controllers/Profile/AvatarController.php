@@ -15,15 +15,16 @@ class AvatarController extends Controller
     {
         $path = $request->file('avatar')->store('avatars', "public");
 
+        $path = Storage::disk('public')->put('avatar',$request->file('avatar'));
+
+        // dd($path);
         // dd($path)
         // Get the full storage path
         $fullStoragePath = storage_path('app' . $path);
 
-        // Uncomment the following lines if you want to delete the old avatar
-        // $oldAvatar = auth()->user()->avatar;
-        // if ($oldAvatar) {
-        //     Storage::disk('public')->delete($oldAvatar);
-        // }
+       if($oldavatar = $request->user()->avatar){
+        Storage::disk('public')->delete($oldavatar);
+       }
 
         auth()->user()->update(['avatar' => $path]);
 
