@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Profile\AvatarController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TicketController;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -132,3 +133,18 @@ Route::get('/auth/callback', function () {
     return redirect('/dashboard');
     // dd($user->email);
 });
+
+Route::middleware('auth')->prefix('ticket')->group(function(){
+
+    Route::resource('/', TicketController::class );
+    // Route::get('/ticket/create' , [TicketController::class, 'create']);
+    // Route::post('/ticket/create' , [TicketController::class, 'store']);
+
+    // Route::get('random', function () {
+    //     // Logic for the "ticket/random" route
+    //     return 'This is the random route';
+    // });
+
+
+});
+
