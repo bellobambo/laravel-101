@@ -134,9 +134,9 @@ Route::get('/auth/callback', function () {
     // dd($user->email);
 });
 
-Route::middleware('auth')->prefix('ticket')->group(function(){
+Route::middleware('auth')->group(function(){
 
-    Route::resource('/', TicketController::class );
+    Route::resource('/ticket', TicketController::class );
     // Route::get('/ticket/create' , [TicketController::class, 'create']);
     // Route::post('/ticket/create' , [TicketController::class, 'store']);
 
