@@ -59,4 +59,12 @@ class User extends Authenticatable
             get: fn($values) => Str::wordCount($values)
         );
     }
+
+    protected function isAdmin(): Attribute
+    {
+        $admins = ['bellobambo21@gmail.com'];
+        return Attribute::make(
+            get:fn() => in_array($this->email, $admins)
+        );
+    }
 }
