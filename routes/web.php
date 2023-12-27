@@ -123,15 +123,13 @@ Route::get('/auth/redirect', function () {
 
 Route::get('/auth/callback', function () {
     $user = Socialite::driver('github')->user();
-    $user = User::updateOrCreate(["email" => $user->email],
-        [
-            'name' => $user->name,
-            'password' => 'password',
-        ]);
+    $user = User::firstOrCreate(['email' => $user->email], [
+        'name'     => $user->name,
+        'password' => 'password',
+    ]);
 
     Auth::login($user);
     return redirect('/dashboard');
-    // dd($user->email);
 });
 
 Route::middleware('auth')->group(function(){
